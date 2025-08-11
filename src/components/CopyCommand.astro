@@ -1,0 +1,53 @@
+---
+const { command = "npm install random-color-library" } = Astro.props;
+---
+
+<div
+  class="relative w-full max-w-xl overflow-hidden rounded-lg border border-slate-200 bg-white/80 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-800/70"
+>
+  <pre
+    class="m-0 overflow-x-auto p-4 text-sm text-slate-800 dark:text-slate-100"><code>{command}</code></pre>
+  <button
+    type="button"
+    class="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center gap-1 rounded-md border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 shadow-sm hover:bg-slate-50 active:bg-slate-100 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-100 dark:hover:bg-slate-600"
+    data-copy-target="code"
+    aria-label="Copy install command"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      class="h-4 w-4"
+    >
+      <path
+        d="M6 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V4Z"
+      ></path>
+      <path
+        d="M4 6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1H8a4 4 0 0 1-4-4V6Z"
+      ></path>
+    </svg>
+    Copy
+  </button>
+</div>
+
+<script>
+  const root =
+    document.currentScript?.previousElementSibling?.previousElementSibling
+      ?.parentElement ?? document.currentScript?.parentElement;
+  const btn = root?.querySelector("button[data-copy-target]");
+  const codeEl = root?.querySelector("pre > code");
+
+  if (btn && codeEl) {
+    btn.addEventListener("click", async () => {
+      try {
+        const text = codeEl.textContent ?? "";
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = "Copied!";
+        setTimeout(() => (btn.textContent = original), 1400);
+      } catch (e) {
+        console.error("Copy failed", e);
+      }
+    });
+  }
+</script>

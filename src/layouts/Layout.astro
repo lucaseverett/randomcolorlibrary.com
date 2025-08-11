@@ -1,0 +1,102 @@
+---
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Random Color Library: generate random Material Design 2 colors and handy color utilities."
+    />
+    <title>Random Color Library</title>
+    <script>
+      (function () {
+        try {
+          const stored = localStorage.getItem("theme");
+          const shouldDark = stored
+            ? stored === "dark"
+            : window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.classList.toggle("dark", shouldDark);
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+  <body
+    class="min-h-dvh flex flex-col bg-slate-50 font-sans text-slate-900 dark:bg-slate-900 dark:text-slate-100"
+  >
+    <button
+      id="theme-toggle"
+      aria-label="Toggle dark mode"
+      class="fixed right-4 top-4 z-50 cursor-pointer"
+      type="button"
+    >
+      <span
+        id="theme-toggle-icon"
+        class="relative block h-7 w-7"
+        aria-hidden="true"
+      >
+        <span
+          id="sun-icon"
+          class="absolute inset-0 block h-7 w-7 text-amber-400 dark:hidden"
+          style="-webkit-mask: url('/light.svg') center/contain no-repeat; mask: url('/light.svg') center/contain no-repeat; background-color: currentColor;"
+        ></span>
+        <span
+          id="moon-icon"
+          class="absolute inset-0 hidden h-7 w-7 dark:block"
+          style="-webkit-mask: url('/dark.svg') center/contain no-repeat; mask: url('/dark.svg') center/contain no-repeat; background-color: currentColor;"
+        ></span>
+      </span>
+    </button>
+    <script>
+      (function () {
+        const btn = document.getElementById("theme-toggle");
+        const root = document.documentElement;
+
+        function isDark() {
+          return root.classList.contains("dark");
+        }
+
+        btn?.addEventListener("click", () => {
+          const nowDark = !isDark();
+          root.classList.toggle("dark", nowDark);
+          try {
+            localStorage.setItem("theme", nowDark ? "dark" : "light");
+          } catch (_) {}
+        });
+      })();
+    </script>
+    <div class="flex-1 grid place-items-center">
+      <slot />
+    </div>
+    <footer class="py-6 text-center text-sm text-slate-500 dark:text-slate-400">
+      <span>
+        Copyright ©{new Date().getFullYear()}
+        <a
+          href="https://lucaseverett.dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline-offset-4 hover:underline">Lucas Everett</a
+        >
+      </span>
+      <span class="px-2">•</span>
+      <a
+        href="https://github.com/lucaseverett/random-color-library"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="underline-offset-4 hover:underline">GitHub</a
+      >
+      <span class="px-2">•</span>
+      <span>
+        <a
+          href="https://github.com/lucaseverett/random-color-library/LICENSE"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="underline-offset-4 hover:underline">MIT License</a
+        >
+      </span>
+    </footer>
+  </body>
+</html>
